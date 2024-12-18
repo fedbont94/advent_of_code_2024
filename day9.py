@@ -44,7 +44,7 @@ def part1(line):
             break
 
     # finalString = finalString.ljust(finalStringLen, ".")
-    # print(finalString)
+    print(finalString)
     finalString = np.array(finalString, dtype=int)
     fullID = np.arange(len(finalString))
     mult = np.multiply(fullID, finalString)
@@ -73,6 +73,37 @@ def part2(line):
         if freeSpace != 0:
             finalString = np.append(finalString, np.zeros(freeSpace, dtype=int) - 1)
 
+    unique, counts = np.unique(finalString, return_counts=True)
+    reversedUnique = unique[::-1]
+    reversedCounts = counts[::-1]
+    for numb, count in zip(reversedUnique, reversedCounts):
+        counter = 0
+        foundPlace = False
+        if numb <= 0:
+            continue
+        maxIndex = np.where(finalString == numb)[0][0]
+        stringSelected = finalString.copy()[:maxIndex]
+        emptyPlaces = (stringSelected == -1).astype(int)
+        # print(emptyPlaces)
+        for i in range(len(emptyPlaces)):
+            counter *= emptyPlaces[i]
+            counter += emptyPlaces[i]
+            if counter == count:
+                foundPlace = True
+                break
+        if foundPlace:
+            finalString[finalString == numb] = -1
+            for j in range(count):
+                finalString[i - j] = numb
+
+    finalString[finalString == -1] = 0
+    # print(finalString)
+    finalString = np.array(finalString, dtype=int)
+    fullID = np.arange(len(finalString))
+    mult = np.multiply(fullID, finalString)
+    sum = np.sum(mult)
+    print(sum)
+
     return
 
 
@@ -82,5 +113,5 @@ if __name__ == "__main__":
     with open(name) as f:
         file = f.read()
 
-    part1(file)
+    # part1(file)
     part2(file)
