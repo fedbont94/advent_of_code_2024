@@ -25,8 +25,8 @@ def find_sides(matrix, letter):
         if neighbors == 4:
             continue
         for missing in missing_n:
-            if missing not in contour:
-                contour.append(missing)
+            # if missing not in contour:
+            contour.append(missing)
 
     matrix_contour = np.full(matrix.shape, ".")
     for pos in contour:
